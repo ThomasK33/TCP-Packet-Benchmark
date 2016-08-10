@@ -27,6 +27,20 @@ client.on('data', function(data) {
 	avrg_time = total_time / message_count;
 
 	console.log("Time elapsed for one package: " + time_delta);
+
+	message_count -= 1;
+
+	if (message_count <= 0) {
+		client.end();
+
+		console.log("\n--- Results ---\n");
+
+		console.log("Total time elapsed: " + total_time);
+		console.log("Number of packets received: " + message_count);
+		console.log("Average time for one packet to be sent: " + avrg_time);
+
+		console.log("\n---\n");
+	}
 });
 
 client.on('close', function() {
@@ -36,6 +50,4 @@ client.on('close', function() {
 function sendMessage() {
 	for (var i = 0; i < message_amount; i += 1)
 		client.write(Date.now() + "");
-
-	client.end();
 }
