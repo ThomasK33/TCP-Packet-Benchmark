@@ -17,8 +17,10 @@ var message_count = 0;
 var total_time = 0;
 var avrg_time = 0;
 
+var chunk = createChunkWithSize(100000);
+
 client.on('data', function(data) {
-	var d = parseInt(data);
+	var d = parseInt(data.toString().split("#")[0]);
 
 	// var time_delta = (Date.now() - d)/2;
 	var time_delta = (Date.now() - d);
@@ -33,14 +35,6 @@ client.on('data', function(data) {
 
 	if (message_amount <= 0) {
 		client.end();
-
-		console.log("\n--- Results ---\n");
-
-		console.log("Total time elapsed: " + total_time);
-		console.log("Number of packets received: " + message_count);
-		console.log("Average time for one packet to be sent: " + avrg_time);
-
-		console.log("\n---\n");
 	}
 	else
 	{
@@ -49,9 +43,45 @@ client.on('data', function(data) {
 });
 
 client.on('close', function() {
+	printResults();
+
 	console.log('Connection closed');
 });
 
-function sendMessage() {
-	client.write(Date.now() + "");
+function printResults() {
+	console.log("\n--- Results ---\n");
+
+	console.log("Total time elapsed: " + total_time);
+	console.log("Number of packets received: " + message_count);
+	console.log("Average time for one packet to be sent: " + avrg_time);
+
+	console.log("\n---\n");
 }
+
+function sendMessage() {
+	client.write(Date.now() + "#" + chunk);
+}
+
+function createChunkWithSize(size) {
+	var str = "";
+
+	for (var i = 0; i < (size / 2); i++)
+		str.concat("a");
+
+	return str;
+}
+
+function exitHandler(options, err) {
+    if (options.cleanup) printResults();
+    if (err) console.log(err.stack);
+    if (options.exit) process.exit();
+}
+
+//do something when app is closing
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
