@@ -1,7 +1,7 @@
 // Load the TCP Library
 const net = require('net');
 
-const logic = require("./lib/logic.js");
+const logic = require("./lib/logic2.js");
 
 const server_port = 25712;
 

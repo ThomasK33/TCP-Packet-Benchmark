@@ -13,10 +13,20 @@ client.connect(server_port, server_addr, function() {
 	sendMessage();
 });
 
+var message_count = 0;
+var total_time = 0;
+var avrg_time = 0;
+
 client.on('data', function(data) {
-	// if (data == "ready")
-		if (message_amount > 0)
-			sendMessage();
+	var d = parseInt(data);
+
+	var time_delta = (Date.now() - d)/2;
+
+	total_time += time_delta;
+	message_count += 1;
+	avrg_time = total_time / message_count;
+
+	console.log("Time elapsed for one package: " + time_delta);
 });
 
 client.on('close', function() {
@@ -24,10 +34,8 @@ client.on('close', function() {
 });
 
 function sendMessage() {
-	client.write(Date.now() + "", function (err){
-		if (message_amount <= 0)
-			client.end();
-	});
+	for (var i = 0; i < message_amount; i += 1)
+		client.write(Date.now() + "");
 
-	message_amount -= 1;
+	client.end();
 }
