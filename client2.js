@@ -43,8 +43,6 @@ client.on('data', function(data) {
 });
 
 client.on('close', function() {
-	printResults();
-
 	console.log('Connection closed');
 });
 
