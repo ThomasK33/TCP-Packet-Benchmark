@@ -1,0 +1,10 @@
+{
+  "name": "tcp",
+  "version": "0.0.1",
+  "description": "tcp exchange behind the firewall",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./tests/"
+  },
+  "author": "Thomas Kosiewski"
+}
