@@ -28,9 +28,9 @@ client.on('data', function(data) {
 
 	console.log("Time elapsed for one package: " + time_delta);
 
-	message_count -= 1;
+	message_amount -= 1;
 
-	if (message_count <= 0) {
+	if (message_amount <= 0) {
 		client.end();
 
 		console.log("\n--- Results ---\n");
