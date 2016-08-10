@@ -1,6 +1,6 @@
 var net = require('net');
 
-const server_addr = "127.0.0.1";
+const server_addr = "185.95.17.127";
 const server_port = 25712;
 
 var message_amount = process.argv[2] | 1;
