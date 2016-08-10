@@ -20,7 +20,8 @@ var avrg_time = 0;
 client.on('data', function(data) {
 	var d = parseInt(data);
 
-	var time_delta = (Date.now() - d)/2;
+	// var time_delta = (Date.now() - d)/2;
+	var time_delta = (Date.now() - d);
 
 	total_time += time_delta;
 	message_count += 1;
@@ -41,6 +42,10 @@ client.on('data', function(data) {
 
 		console.log("\n---\n");
 	}
+	else
+	{
+		sendMessage();
+	}
 });
 
 client.on('close', function() {
@@ -48,6 +53,5 @@ client.on('close', function() {
 });
 
 function sendMessage() {
-	for (var i = 0; i < message_amount; i += 1)
-		client.write(Date.now() + "");
+	client.write(Date.now() + "");
 }
